@@ -30,7 +30,7 @@ jobs:
           path: dist/client
 
   deploy:
-    if: vars.GITHUB_PAGES_ENABLED == 'true'
+    if: vars.PUBLISH_PAGES == 'true'
     needs: build
     runs-on: ubuntu-latest
     permissions:
