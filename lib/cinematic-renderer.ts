@@ -2,22 +2,12 @@ import * as THREE from 'three';
 import { between, clamp, deliveryAt, directFilm, wingPose } from './cinematic-director';
 import { neutralMatte } from './film-matte';
 import { prepareHogwartsVideo } from './film-video';
+import { BACKGROUNDS, loadImage, type FilmSize as Size, type FilmRenderer } from './film-assets';
 import { landscapeFragment, landscapeVertex, passageFragment, passageVertex, sailFragment, sailVertex, wingVertex } from './film-shaders';
 
-type Size = { width: number; height: number; portrait: boolean };
 type Wing = THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>;
 type Rig = { root: THREE.Group; body: THREE.Mesh; near: Wing; far: Wing };
-export type FilmRenderer = { resize: (size: Size) => void; render: (seconds: number) => void; setPlaying: (playing: boolean) => void; dispose: () => void };
-const BACKGROUNDS = [
-  ['/rio/rio-night.webp', '/journey/rio-portrait.webp'],
-  ['/journey/hogwarts-wide.webp', '/journey/hogwarts-portrait.webp'],
-  ['/film/ocean-wide.webp', '/film/ocean-portrait.webp'],
-  ['/journey/newyork-wide.webp', '/journey/newyork-portrait.webp'],
-];
-
-async function loadImage(src: string): Promise<HTMLImageElement> {
-  const img = new Image(); img.src = src; await img.decode(); return img;
-}
+export type { FilmRenderer } from './film-assets';
 function canvasFor(img: HTMLImageElement, keyed = false) {
   const canvas = document.createElement('canvas'); canvas.width = img.width; canvas.height = img.height;
   const context = canvas.getContext('2d', { willReadFrequently: keyed });
@@ -57,9 +47,9 @@ export async function createCinematicRenderer(canvas: HTMLCanvasElement, initial
     ...BACKGROUNDS.map(pair => pair[initial.portrait ? 1 : 0]),
     '/film/bird-parts.webp', '/film/ship-matte.webp', '/journey/snitch.webp', '/journey/spiderman.webp', '/journey/envelope.webp', '/journey/clouds.webp', '/journey/newyork-portrait.webp', '/rio/curtains.webp', '/rio/blu-sprite.webp', '/rio/jewel-sprite.webp',
   ].map(loadImage)).catch(error => { renderer.dispose(); throw error; });
-  const video = await prepareHogwartsVideo(initial.portrait).catch(() => null);
-  const videoMap = video ? new THREE.VideoTexture(video) : null;
-  if (videoMap) { videoMap.colorSpace = THREE.SRGBColorSpace; textures.push(videoMap); }
+  // The opening scene must not wait for a later chapter's video.
+  let video: HTMLVideoElement | null = null;
+  let videoMap: THREE.VideoTexture | null = null;
   let maps: THREE.Texture[] = images.slice(0, 4).map(texture);
   const mapCache = new Map<boolean, THREE.Texture[]>([[activePortrait, maps]]);
   const birdSheet = canvasFor(images[4], true), shipTexture = texture(canvasFor(images[5], true));
@@ -124,6 +114,7 @@ export async function createCinematicRenderer(canvas: HTMLCanvasElement, initial
   function render(seconds: number) {
     if (disposed) return; lastTime = seconds;
     const shot = directFilm(seconds, size.portrait), t = shot.time, aspect = size.width / size.height;
+    canvas.dataset.scene = shot.location;
     const cam = shot.camera;
     camera.position.set(cam.x, cam.y, 11 / cam.zoom);
     camera.lookAt(cam.x + Math.sin(cam.yaw) * 5, cam.y, 0); camera.rotateZ(cam.roll); camera.updateMatrixWorld();
@@ -137,7 +128,7 @@ export async function createCinematicRenderer(canvas: HTMLCanvasElement, initial
         if (Math.abs(video.currentTime - target) > .18 && !video.seeking) video.currentTime = target;
         if (playing && video.paused && !playPending && !playbackBlocked) {
           playPending = true;
-          video.play().catch(() => { playbackBlocked = true; }).finally(() => { playPending = false; if (!playing || directFilm(lastTime, size.portrait).index !== 1) video.pause(); });
+          video.play().catch(() => { playbackBlocked = true; }).finally(() => { playPending = false; if (!playing || directFilm(lastTime, size.portrait).index !== 1) video?.pause(); });
         }
       }
       if ((!playing || shot.index !== 1) && !video.paused) video.pause();
@@ -245,5 +236,13 @@ export async function createCinematicRenderer(canvas: HTMLCanvasElement, initial
     render(lastTime);
   }
   resize(initial);
+  void prepareHogwartsVideo(initial.portrait).then(loaded => {
+    if (disposed) { loaded.removeAttribute('src'); loaded.load(); return; }
+    video = loaded;
+    videoMap = new THREE.VideoTexture(loaded);
+    videoMap.colorSpace = THREE.SRGBColorSpace;
+    textures.push(videoMap);
+    render(lastTime);
+  }).catch(() => { /* The animated castle still remains available. */ });
   return { resize, render, setPlaying(value: boolean) { playing = value; playbackBlocked = false; render(lastTime); }, dispose() { disposed = true; if (video) { video.pause(); video.removeAttribute('src'); video.load(); } textures.forEach(t => t.dispose()); materials.forEach(m => m.dispose()); geometries.forEach(g => g.dispose()); renderer.dispose(); } };
 }

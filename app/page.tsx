@@ -26,6 +26,7 @@ export default function Home() {
   const [paused, setPaused] = useState(false);
   const [ready, setReady] = useState(false);
   const [assetError, setAssetError] = useState(false);
+  const [filmRetry, setFilmRetry] = useState(0);
   const [viewport, setViewport] = useState({ width: 1280, height: 800 });
   const [musicOpen, setMusicOpen] = useState(false);
   const [musicPlaying, setMusicPlaying] = useState(false);
@@ -63,7 +64,11 @@ export default function Home() {
   const handleFilmReady = useCallback(() => { setAssetError(false); setReady(true); }, []);
   const handleFilmError = useCallback(() => {
     setAssetError(true);
-    if (progress.get() > 0) { timeline.current?.stop(); progress.set(1); }
+    setReady(false);
+    timeline.current?.stop();
+    setStarted(false);
+    setPaused(false);
+    progress.set(0);
   }, [progress]);
 
   useEffect(() => {
@@ -133,15 +138,13 @@ export default function Home() {
     setStarted(true);
     setPaused(false);
     if (soundWanted) playMusic(true);
-    if (reduce) progress.set(1);
-    else timeline.current = animate(progress, 1, { duration: STORY_DURATION, ease: 'linear' });
+    timeline.current = animate(progress, 1, { duration: reduce ? 16 : STORY_DURATION, ease: 'linear' });
   }
 
-  function showInvite() {
-    timeline.current?.stop();
-    setStarted(true);
-    setPaused(false);
-    progress.set(1);
+  function retryFilm() {
+    setAssetError(false);
+    setReady(false);
+    setFilmRetry(value => value + 1);
   }
 
   function togglePause() {
@@ -153,13 +156,6 @@ export default function Home() {
   useEffect(() => {
     if (beat === 6) headingRef.current?.focus({ preventScroll: true });
   }, [beat]);
-
-  useEffect(() => {
-    if (reduce && started && progress.get() < 1) {
-      timeline.current?.stop();
-      progress.set(1);
-    }
-  }, [reduce, started, progress]);
 
   useEffect(() => {
     const hidden = () => {
@@ -184,11 +180,11 @@ export default function Home() {
   return (
     <Collapsible open={musicOpen} onOpenChange={setMusicOpen}>
     <main ref={stageRef} className={'theater' + (invite ? ' is-invitation' : '')} data-paused={paused} data-reduced={reduce || undefined}>
-      <FilmJourney progress={progress} width={viewport.width} height={viewport.height} portrait={portrait} reduced={!!reduce} playing={cinematic && !paused} onReady={handleFilmReady} onError={handleFilmError} />
+      <FilmJourney progress={progress} width={viewport.width} height={viewport.height} portrait={portrait} reduced={!!reduce} playing={cinematic && !paused} retry={filmRetry} onReady={handleFilmReady} onError={handleFilmError} />
       <div className="scene-vignette" aria-hidden="true" />
 
-      <motion.div className="curtain curtain-left" style={{ x: leftCurtain, opacity: curtainOpacity }} aria-hidden="true" />
-      <motion.div className="curtain curtain-right" style={{ x: rightCurtain, opacity: curtainOpacity }} aria-hidden="true" />
+      <motion.div className="curtain curtain-left" style={{ x: reduce ? 0 : leftCurtain, opacity: curtainOpacity }} aria-hidden="true" />
+      <motion.div className="curtain curtain-right" style={{ x: reduce ? 0 : rightCurtain, opacity: curtainOpacity }} aria-hidden="true" />
 
       <header className="scene-header">
         <div className="scene-controls">
@@ -201,9 +197,10 @@ export default function Home() {
         <p className="opening-eyebrow">СЕГОДНЯ ГЛАВНАЯ ГЕРОИНЯ — ТЫ</p>
         <h1 id="opening-title"><span>Аня,</span>полетели?</h1>
         <p className="opening-copy">У меня для тебя маленькое приключение.<br />И одно очень особенное приглашение.</p>
-        <Button className="gold-button start-button" disabled={!ready && !assetError} onClick={assetError ? showInvite : startStory}>
-          {ready || assetError ? 'Открыть' : 'Готовим путешествие…'}
+        <Button className="gold-button start-button" disabled={!ready && !assetError} onClick={assetError ? retryFilm : startStory}>
+          {assetError ? 'Попробовать ещё раз' : ready ? 'Открыть' : 'Готовим путешествие…'}
         </Button>
+        {assetError && <p role="status" className="opening-copy">Путешествие не загрузилось. Давай попробуем ещё раз.</p>}
       </motion.section>}
 
       <AnimatePresence mode="wait">
