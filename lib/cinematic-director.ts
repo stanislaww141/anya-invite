@@ -12,6 +12,15 @@ export const clamp = (v: number, min = 0, max = 1) => Math.max(min, Math.min(max
 export const settle = (v: number) => { const u = clamp(v); return u * u * (3 - 2 * u); };
 export const between = (t: number, start: number, end: number) => settle((t - start) / (end - start));
 
+/** Keep a clear gap across the full wing sweep, including on tall phones. */
+export function birdFormation(width: number, height: number, portrait: boolean, birdSize: number) {
+  const scale = Math.min((portrait ? .28 : .39) * birdSize, width / height * .46);
+  const unit = height * scale / 2;
+  // The complete animated rigs need at most 1.69 units between their pivots.
+  const step = (unit * 1.8 + clamp(width * .035, 12, 20)) / width;
+  return { scale, step, centerOffset: portrait ? .09 : .0625 };
+}
+
 /** A location changes only after both birds have flown completely off screen. */
 export function directFilm(seconds: number, portrait: boolean) {
   const t = clamp(seconds, 0, FILM_LENGTH);

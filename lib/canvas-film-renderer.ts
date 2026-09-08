@@ -1,5 +1,5 @@
 import { BACKGROUNDS, loadImage, type FilmRenderer, type FilmSize } from './film-assets';
-import { between, deliveryAt, directFilm, wingPose } from './cinematic-director';
+import { between, birdFormation, deliveryAt, directFilm, wingPose } from './cinematic-director';
 import { neutralMatte } from './film-matte';
 
 /** The same story and clock, available on devices without WebGL. */
@@ -50,11 +50,12 @@ export async function createCanvasFilmRenderer(canvas: HTMLCanvasElement, initia
     context.save(); context.translate(w / 2, h / 2); context.rotate(-roll);
     context.drawImage(source, px - dw / 2, py - dh / 2, dw, dh);
     context.restore();
+    const formation = birdFormation(w, h, size.portrait, reduced ? .9 : shot.birds.size);
     if (shot.birds.visible) birdParts.forEach((parts, i) => {
       const pose = wingPose(reduced ? 0 : seconds, i * .85), b = shot.birds;
-      const unit = h / 2 * (size.portrait ? .28 : .39) * (reduced ? .9 : b.size) / 400;
+      const unit = h / 2 * formation.scale / 400;
       context.save();
-      context.translate((reduced ? .35 + i * .2 : b.x + i * (size.portrait ? .18 : .125)) * w, ((reduced ? .4 : b.y + pose.body) + i * .035) * h);
+      context.translate(((reduced ? .45 : b.x + formation.centerOffset) + (i - .5) * formation.step) * w, ((reduced ? .4 : b.y + pose.body) + i * .035) * h);
       context.rotate(reduced ? 0 : -b.bank);
       function part(index: number, rotation: number, factor = 1) {
         const [sx, sy, sw, sh, pivotX, pivotY] = parts[index];

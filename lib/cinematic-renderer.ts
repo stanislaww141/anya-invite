@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { between, deliveryAt, directFilm, wingPose } from './cinematic-director';
+import { between, birdFormation, deliveryAt, directFilm, wingPose } from './cinematic-director';
 import { neutralMatte } from './film-matte';
 import { BACKGROUNDS, loadImage, type FilmSize as Size, type FilmRenderer } from './film-assets';
 import { sailFragment, wingVertex } from './film-shaders';
@@ -97,11 +97,12 @@ export async function createCinematicRenderer(canvas: HTMLCanvasElement, initial
     landscape.scale.set(artHeight * artRatio, artHeight, 1);
     landscapeMaterial.map = maps[shot.index];
 
+    const formation = birdFormation(size.width, size.height, size.portrait, shot.birds.size);
     rigs.forEach((rig, i) => {
       const pose = wingPose(t, i * .85), b = shot.birds;
       rig.root.visible = b.visible;
-      rig.root.position.copy(screenPoint(b.x + i * (size.portrait ? .18 : .125), b.y + i * .035 + pose.body));
-      rig.root.scale.setScalar((size.portrait ? .28 : .39) * b.size);
+      rig.root.position.copy(screenPoint(b.x + formation.centerOffset + (i - .5) * formation.step, b.y + i * .035 + pose.body));
+      rig.root.scale.setScalar(formation.scale);
       rig.root.rotation.z = b.bank + i * .025;
       rig.near.rotation.z = .47 + pose.flap * .8;
       rig.near.rotation.x = pose.flap * .18;
