@@ -6,7 +6,7 @@ const sans = Manrope({ variable: '--font-sans-invite', subsets: ['latin', 'cyril
 const serif = Cormorant_Garamond({ variable: '--font-serif-invite', subsets: ['latin', 'cyrillic'], weight: ['400', '500'], style: ['normal', 'italic'], display: 'swap' });
 
 export const metadata: Metadata = {
-  title: 'Аня, полетели? · Наш маленький Рио',
+  title: 'Аня, полетели? · Маленькое приключение',
   description: 'Маленькое приключение для Ани и приглашение на свидание. Ресторан SOMA, 13 сентября 2026, 18:00. Москва, Петровский бульвар, 14.',
   robots: { index: false, follow: false },
   icons: { icon: '/icon.svg' },
