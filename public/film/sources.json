@@ -1,0 +1,14 @@
+{
+  "generated": ["bird-parts.webp", "ship-matte.webp", "ocean-wide.webp"],
+  "derived": { "ocean-portrait.webp": "Portrait framing of generated ocean-wide.webp" },
+  "video": {
+    "source_page": "https://www.hogwartslegacy.com/en-us",
+    "desktop": "https://cdn-hogwartslegacy.warnerbrosgames.com/home/hero.mp4?c=b",
+    "mobile": "https://cdn-hogwartslegacy.warnerbrosgames.com/home/hero-m.mp4?c=b",
+    "credit": "Hogwarts Legacy / Warner Bros. Games",
+    "duration_seconds": 8,
+    "fps": 24,
+    "audio": false,
+    "content": "Animated Hogwarts key art with moving clouds, mist, cloak and wand glow; no titles or scene cuts."
+  }
+}

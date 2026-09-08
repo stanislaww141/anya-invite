@@ -5,7 +5,7 @@ import { AnimatePresence, animate, cubicBezier, motion, useMotionValue, useMotio
 import { ArrowDownToLine, ArrowUpRight, Heart, MapPin, Music2, Pause, Play, RotateCcw, Sparkles, Volume2, X } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { FilmJourney } from '@/components/film-journey';
-import { assetsForViewport, PORTRAIT_MEDIA, STORY_DURATION, storyBeat } from '@/lib/story-timeline';
+import { STORY_DURATION, storyBeat } from '@/lib/story-timeline';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const TRACK = 'https://soundcloud.com/interscope/04-hot-wings-i-wanna-party';
@@ -60,16 +60,11 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    let active = true;
-    Promise.all(assetsForViewport(window.matchMedia(PORTRAIT_MEDIA).matches).map(src => new Promise<void>((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => resolve();
-      img.onerror = reject;
-      img.src = src;
-    }))).then(() => { if (active) setReady(true); }).catch(() => { if (active) setAssetError(true); });
-    return () => { active = false; };
-  }, []);
+  const handleFilmReady = useCallback(() => { setAssetError(false); setReady(true); }, []);
+  const handleFilmError = useCallback(() => {
+    setAssetError(true);
+    if (progress.get() > 0) { timeline.current?.stop(); progress.set(1); }
+  }, [progress]);
 
   useEffect(() => {
     if (!iframeRef.current) return;
@@ -189,7 +184,7 @@ export default function Home() {
   return (
     <Collapsible open={musicOpen} onOpenChange={setMusicOpen}>
     <main ref={stageRef} className={'theater' + (invite ? ' is-invitation' : '')} data-paused={paused} data-reduced={reduce || undefined}>
-      <FilmJourney progress={progress} width={viewport.width} height={viewport.height} portrait={portrait} reduced={!!reduce} />
+      <FilmJourney progress={progress} width={viewport.width} height={viewport.height} portrait={portrait} reduced={!!reduce} playing={cinematic && !paused} onReady={handleFilmReady} onError={handleFilmError} />
       <div className="scene-vignette" aria-hidden="true" />
 
       <motion.div className="curtain curtain-left" style={{ x: leftCurtain, opacity: curtainOpacity }} aria-hidden="true" />
