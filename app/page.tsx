@@ -13,6 +13,14 @@ const MAP = 'https://yandex.ru/maps/?text=' + encodeURIComponent('Рестора
 const ease = cubicBezier(.65, 0, .35, 1);
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  // Link-preview crawlers must not extract the invitation from the static HTML.
+  // Mount the complete experience in the browser, with its original effects.
+  return mounted ? <Invitation /> : null;
+}
+
+function Invitation() {
   const reduce = useReducedMotion();
   const progress = useMotionValue(0);
   const [started, setStarted] = useState(false);
