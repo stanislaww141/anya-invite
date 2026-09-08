@@ -167,7 +167,7 @@ export default function Home() {
             <div className="date-details">
               <div><strong>13</strong><span>сентября · воскресенье</span></div>
               <span className="detail-divider" aria-hidden="true" />
-              <div><strong>18:00</strong><span>по московскому времени</span></div>
+              <div><strong>18:00</strong></div>
             </div>
             <div className="restaurant"><span>SOMA</span><p>РЕСТОРАН · МОСКВА</p></div>
             <p className="address"><MapPin size={15} aria-hidden="true" />Петровский бульвар, 14</p>
