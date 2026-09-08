@@ -148,7 +148,6 @@ export default function Home() {
       </header>
 
       {beat === 0 && <motion.section className="opening" style={{ opacity: openingOpacity, pointerEvents: started ? 'none' : 'auto' }} inert={started} aria-labelledby="opening-title">
-        <p className="opening-eyebrow">СЕГОДНЯ ГЛАВНАЯ ГЕРОИНЯ — ТЫ</p>
         <h1 id="opening-title"><span>Аня,</span>полетели?</h1>
         <p className="opening-copy">У меня для тебя маленькое приключение.<br />И одно очень особенное приглашение.</p>
         <Button className="gold-button start-button" disabled={!ready && !assetError} onClick={assetError ? retryFilm : startStory}>
