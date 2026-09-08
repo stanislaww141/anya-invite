@@ -3,7 +3,7 @@ export type FilmRenderer = { resize: (size: FilmSize) => void; render: (seconds:
 export const BACKGROUNDS = [
   ['/rio/rio-night.webp', '/journey/rio-portrait.webp'],
   ['/journey/hogwarts-wide.webp', '/journey/hogwarts-portrait.webp'],
-  ['/film/ocean-wide.webp', '/film/ocean-portrait.webp'],
+  ['/journey/odyssey-wide.webp', '/journey/odyssey-portrait.webp'],
   ['/journey/newyork-wide.webp', '/journey/newyork-portrait.webp'],
 ];
 
