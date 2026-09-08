@@ -64,8 +64,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid #ffe3a5; outline-offs
 .cloud-panel { position: absolute; top: -10%; bottom: -10%; width: 66%; background-image: url('/journey/clouds.webp'); background-size: auto 120%; background-position: center; filter: blur(14px); }
 .cloud-left { left: -5%; mask-image: linear-gradient(90deg,#000 50%,transparent); }
 .cloud-right { right: -5%; mask-image: linear-gradient(270deg,#000 50%,transparent); }
-.chapter-caption { position: absolute; z-index: 18; bottom: 15%; left: 20px; right: 20px; display: flex; flex-direction: column; align-items: center; gap: 9px; pointer-events: none; color: #fff0ce; font-family: var(--font-serif-invite),Georgia,serif; font-size: clamp(2rem,3.6vw,3.5rem); line-height: 1; text-shadow: 0 3px 25px #031229,0 1px 6px #031229; }
-.chapter-number { color: #ffdb9a; font-family: var(--font-sans-invite),sans-serif; font-size: .75rem; letter-spacing: .2em; }
 .scene-vignette { position: absolute; inset: 0; z-index: 17; pointer-events: none; background: linear-gradient(180deg,#03102545 0%,transparent 26%,transparent 51%,#020c2490 100%); transition: background-color 800ms ease; }
 .is-invitation .scene-vignette { background-color: #02112882; }
 .curtain { position: absolute; top: 0; bottom: 0; width: 50.1%; background-image: url('/rio/curtains.webp'); background-size: 200% 100%; z-index: 30; will-change: transform; pointer-events: none; }
@@ -135,7 +133,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid #ffe3a5; outline-offs
 .music-header > span { display: inline-flex; align-items: center; gap: 8px; font-size: .6875rem; letter-spacing: .1em; color: #d1e0e8; }
 .close-music { width: 30px; height: 30px; padding: 0; border: 0; background: transparent; color: #fff; }
 .music-dock > p:not(.music-help) { font-size: 1rem; margin: 8px 0 13px; color: #ffe1a4; }
-.music-dock iframe { border: 0; display: block; width: 100%; height: 166px; border-radius: 8px; color-scheme: light; }
 .music-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 12px; }
 .music-toggle { font-size: .75rem; color: #132c45; background: #ffd991; padding: 8px 10px; height: auto; gap: 6px; border-radius: 22px; }
 .music-actions a { font-size: .6875rem; display: flex; align-items: center; gap: 4px; color: #d8e6ef; text-decoration: none; }
@@ -161,7 +158,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid #ffe3a5; outline-offs
   .opening h1 { font-size: clamp(4.8rem,18vw,7.5rem); }
   .opening-copy { font-size: 1rem; max-width: 320px; margin-bottom: 25px; line-height: 1.8; }
   .journey-bird { width: clamp(150px,46vw,205px); }
-  .chapter-caption { bottom: 13%; font-size: 2.5rem; }
   .story-caption { bottom: 17%; left: 25px; right: 25px; }
   .caption-place { font-size: .625rem; letter-spacing: .17em; }
   .story-caption p { font-size: 2.75rem; margin-top: 12px; }

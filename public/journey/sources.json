@@ -1,18 +1,48 @@
 {
-  "generated": ["rio-portrait.webp", "odyssey-wide.webp", "odyssey-portrait.webp", "newyork-wide.webp", "newyork-portrait.webp", "snitch.webp", "envelope.webp"],
-  "derived": { "clouds.webp": "Crop of generated odyssey-portrait.webp" },
+  "generated": [
+    "rio-portrait.webp",
+    "odyssey-wide.webp",
+    "odyssey-portrait.webp",
+    "newyork-wide.webp",
+    "newyork-portrait.webp",
+    "snitch.webp",
+    "envelope.webp"
+  ],
+  "derived": {
+    "clouds.webp": "Crop of generated odyssey-portrait.webp"
+  },
   "sourced": [
     {
-      "files": ["hogwarts-wide.webp", "hogwarts-portrait.webp"],
+      "files": [
+        "hogwarts-wide.webp",
+        "hogwarts-portrait.webp"
+      ],
       "page": "https://www.harrypotter.com/features/deconstructing-hogwarts-scene-from-philosophers-stone",
       "image": "https://contentful.harrypotter.com/usf1vwtuqyxm/7zR7qzKR2zD5nEgXGPgGE/762f5bc95481a55ec24f2b042b9cbff7/HP-F1-philosophers-stone-hogwarts-boats-lake-first-years-web-landscape",
       "credit": "Harry Potter characters and elements © & ™ Warner Bros. Entertainment Inc."
     },
     {
-      "files": ["spiderman.webp"],
+      "files": [
+        "spiderman.webp"
+      ],
       "page": "https://sites.sonypictures.com/spidermanfarfromhome/site/app/",
       "image": "https://dx35vtwkllhj9.cloudfront.net/sonypictures/spider-man-far-from-home/images/regions/us/app/spidey.png",
       "credit": "© 2019 Sony Pictures Digital Productions Inc.; © & ™ 2019 Marvel; © 2019 CTMG"
+    },
+    {
+      "files": [
+        "hogwarts-castle-wide-v2.webp",
+        "hogwarts-castle-portrait-v2.webp"
+      ],
+      "page": "https://commons.wikimedia.org/wiki/File:Hogwarts_at_night_in_late_1800s_according_to_Hogwarts_Legacy.jpg",
+      "credit": "Hogwarts Legacy / Warner Bros. Games",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "source_dimensions": [
+        3840,
+        2160
+      ],
+      "changes": "Converted to WebP; portrait is a native 1215×2160 crop, no upscaling."
     }
   ]
 }
