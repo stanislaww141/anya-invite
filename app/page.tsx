@@ -7,6 +7,7 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { FilmJourney } from '@/components/film-journey';
 import { STORY_DURATION, storyBeat } from '@/lib/story-timeline';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { assetUrl } from '@/lib/asset-url';
 
 const MAP = 'https://yandex.ru/maps/?text=' + encodeURIComponent('Ресторан SOMA Москва Петровский бульвар 14');
 const ease = cubicBezier(.65, 0, .35, 1);
@@ -171,7 +172,7 @@ export default function Home() {
             <div className="restaurant"><span>SOMA</span><p>РЕСТОРАН · МОСКВА</p></div>
             <p className="address"><MapPin size={15} aria-hidden="true" />Петровский бульвар, 14</p>
             <div className="date-actions">
-              <a className={buttonVariants({ size: 'lg' }) + ' gold-button'} href="/date-with-you.ics" download="Свидание-с-Аней.ics">Сохранить свидание<ArrowDownToLine size={17} aria-hidden="true" /></a>
+              <a className={buttonVariants({ size: 'lg' }) + ' gold-button'} href={assetUrl('/date-with-you.ics')} download="Свидание-с-Аней.ics">Сохранить свидание<ArrowDownToLine size={17} aria-hidden="true" /></a>
               <a href={MAP} target="_blank" rel="noopener noreferrer" className="map-link">Место нашей встречи<ArrowUpRight size={16} /><span className="sr-only"> — карта в новой вкладке</span></a>
             </div>
           </motion.article>
@@ -187,13 +188,13 @@ export default function Home() {
         {musicError && <p className="music-help" role="status">Не получилось включить звук. Нажми «Включить музыку» ещё раз.</p>}
       </CollapsibleContent>
 
-      <audio ref={audioRef} src="/audio/hot-wings.mp3" preload="auto" loop
+      <audio ref={audioRef} src={assetUrl('/audio/hot-wings.mp3')} preload="auto" loop
         onPlaying={() => { setMusicPlaying(true); setMusicError(false); }}
         onPause={() => setMusicPlaying(false)}
         onError={() => { setMusicPlaying(false); setMusicError(true); }}
       />
       <footer className="scene-footer"><span>{invite ? '13 СЕНТЯБРЯ · ТЫ + Я' : ''}</span><span className="footer-love"><Sparkles size={13} />с любовью, для Ани</span></footer>
-      <noscript><div className="no-script"><h1>Аня, у нас свидание.</h1><p>Ресторан SOMA · 13 сентября 2026, 18:00 (Москва).</p><p>Петровский бульвар, 14.</p><a href="/date-with-you.ics" download>Сохранить в календарь</a></div></noscript>
+      <noscript><div className="no-script"><h1>Аня, у нас свидание.</h1><p>Ресторан SOMA · 13 сентября 2026, 18:00 (Москва).</p><p>Петровский бульвар, 14.</p><a href={assetUrl('/date-with-you.ics')} download>Сохранить в календарь</a></div></noscript>
     </main>
     </Collapsible>
   );
