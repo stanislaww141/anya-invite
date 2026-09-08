@@ -70,7 +70,7 @@ export async function createCinematicRenderer(canvas: HTMLCanvasElement, initial
     near.position.set(.015, -.015, .02); far.position.set(.06, .05, -.02);
     root.add(far, body, near); return { root, body, near, far };
   };
-  const rigs = [makeRig(false), makeRig(true)];
+  const rigs = [makeRig(true), makeRig(false)];
   const snitch = new THREE.Mesh(plane(.24, .24), basic(snitchTexture)); actors.add(snitch); snitch.renderOrder = 13;
 
   const spider = new THREE.Mesh(plane(1, 1026 / 604), basic(spiderTexture)); front.add(spider); spider.renderOrder = 3;
@@ -100,7 +100,7 @@ export async function createCinematicRenderer(canvas: HTMLCanvasElement, initial
     rigs.forEach((rig, i) => {
       const pose = wingPose(t, i * .85), b = shot.birds;
       rig.root.visible = b.visible;
-      rig.root.position.copy(screenPoint(b.x + i * (size.portrait ? .18 : .125), b.y - i * .067 + pose.body));
+      rig.root.position.copy(screenPoint(b.x + i * (size.portrait ? .18 : .125), b.y + i * .035 + pose.body));
       rig.root.scale.setScalar((size.portrait ? .28 : .39) * b.size);
       rig.root.rotation.z = b.bank + i * .025;
       rig.near.rotation.z = .47 + pose.flap * .8;

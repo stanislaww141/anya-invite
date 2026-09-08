@@ -25,8 +25,8 @@ export async function createCanvasFilmRenderer(canvas: HTMLCanvasElement, initia
   let orientationRequest = 0, activePortrait = initial.portrait;
   const cache = new Map([[activePortrait, backgrounds]]);
   const birdParts = [
-    [[0, 73, 515, 356, .585, .477], [519, 0, 369, 411, .88, .765], [944, 43, 380, 367, .884, .737]],
     [[0, 504, 515, 360, .62, .445], [536, 441, 350, 398, .88, .766], [943, 477, 379, 356, .895, .737]],
+    [[0, 73, 515, 356, .585, .477], [519, 0, 369, 411, .88, .765], [944, 43, 380, 367, .884, .737]],
   ];
   function sprite(source: CanvasImageSource, x: number, y: number, width: number, height: number, rotation = 0) {
     context.save(); context.translate(x, y); context.rotate(rotation);
@@ -54,7 +54,7 @@ export async function createCanvasFilmRenderer(canvas: HTMLCanvasElement, initia
       const pose = wingPose(reduced ? 0 : seconds, i * .85), b = shot.birds;
       const unit = h / 2 * (size.portrait ? .28 : .39) * (reduced ? .9 : b.size) / 400;
       context.save();
-      context.translate((reduced ? .35 + i * .2 : b.x + i * (size.portrait ? .18 : .125)) * w, (reduced ? .4 : b.y - i * .067 + pose.body) * h);
+      context.translate((reduced ? .35 + i * .2 : b.x + i * (size.portrait ? .18 : .125)) * w, ((reduced ? .4 : b.y + pose.body) + i * .035) * h);
       context.rotate(reduced ? 0 : -b.bank);
       function part(index: number, rotation: number, factor = 1) {
         const [sx, sy, sw, sh, pivotX, pivotY] = parts[index];
