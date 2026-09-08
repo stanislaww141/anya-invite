@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Evening for Two//Invitation//RU
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:soma-20260913T150000-evening-for-two
+DTSTAMP:20260908T172300Z
+DTSTART:20260913T150000Z
+SUMMARY:Вечер для нас двоих — SOMA
+LOCATION:SOMA\, Москва\, Петровский бульвар\, 14
+DESCRIPTION:Свидание в SOMA. Вход через арку. Нач
+ ало в 18:00 по московскому времени.
+END:VEVENT
+END:VCALENDAR
